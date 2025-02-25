@@ -1,4 +1,14 @@
 require('dotenv').config(); 
+const mongoose = require("mongoose");
+
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB connected successfully"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
 
 const express = require("express");
 const Song = require("./models/songs");
@@ -22,15 +32,14 @@ router.get("/songs", async (req, res) => {
   }
 });
 
-router.get("/songs/:id", async (req,res) => {
-  try{
-    const song = await Song.findById(req.params.id)
-    res.json(song)
+router.get("/songs/:id", async (req, res) => {
+  try {
+    const song = await Song.findById(req.params.id);
+    res.json(song);
+  } catch (err) {
+    res.status(400).send(err);
   }
-  catch{
-    res.status(400).send(err)
-  }
-})
+});
 
 router.post("/songs", async (req, res) => {
   try {
