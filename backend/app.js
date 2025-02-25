@@ -1,3 +1,5 @@
+require('dotenv').config(); 
+
 const express = require("express");
 const Song = require("./models/songs");
 var cors = require("cors");
